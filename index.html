@@ -292,7 +292,7 @@
         "PILEA", "PILEAS", "PILEATE", "PILELESS", "PILE", "PILER", "PILERS", "PILES", "PILL", 
         "PILLAR", "PILLARLESS", "PILLARS", "PILLARET", "PILLARETS", "PILLER", "PILLERS", "PILLS", 
         "PIPISTRELLE", "PIPISTRELLES", "PIPIT", "PIPITS", "PIRATE", "PIRATES", "PISE", "PISES", 
-        "PISS", "PISTE", "PISTES", "PITA", "PITAS", "PITLESS", "PITS", "PITTA", "PITTAS", "PITTER", 
+        "PISS", "PISSES", "PISTE", "PISTES", "PITA", "PITAS", "PITLESS", "PITS", "PITTA", "PITTAS", "PITTER", 
         "PITTERS", "RAPIER", "RAPIERS", "RESPITE", "RESPITES", "SALTPIETER", "SALTPIETERS", 
         "SALTPIETRE", "SALTPIETRES", "SEPIA", "SEPIAL", "SEPIAS", "SPIEL", "SPIELER", "SPIELERS", 
         "SPIELS", "SPIES", "SPILE", "SPILES", "SPILL", "SPILLER", "SPILLERS", "SPILLS", "SPILT", 
@@ -307,14 +307,14 @@
     
     const ranks = [
         { score: 0, name: "Novice" },
-        { score: 17, name: "Euclidean" },
-        { score: 42, name: "Pythagorean" },
-        { score: 68, name: "Cartesian" },
-        { score: 128, name: "Boolean" },
-        { score: 214, name: "Newtonian" },
-        { score: 342, name: "Gaussian" },
-        { score: 428, name: "Einsteinian" },
-        { score: 599, name: "Eulerian" }
+        { score: 16, name: "Euclidean" },
+        { score: 40, name: "Pythagorean" },
+        { score: 65, name: "Cartesian" },
+        { score: 121, name: "Boolean" },
+        { score: 202, name: "Newtonian" },
+        { score: 324, name: "Gaussian" },
+        { score: 405, name: "Einsteinian" },
+        { score: 566, name: "Eulerian" }
     ];
 
     function renderLetters() {
@@ -403,7 +403,7 @@
         ranks.forEach((r, i) => { if (score >= r.score) rankIdx = i; });
         
         let rankName = ranks[rankIdx].name;
-        if (score >= 856) rankName = "Queen Bee";
+        if (score >= 809) rankName = "Queen Bee";
         document.getElementById('rank').innerText = rankName;
 
         const dots = document.querySelectorAll('.progress-dot');
@@ -414,7 +414,7 @@
                 dot.style.backgroundColor = "#e0e0e0";
             }
         });
-        if (score >= 856) {
+        if (score >= 809) {
             document.querySelector('.progress-dot.square').style.backgroundColor = "var(--pi-gold)";
         }
     }
