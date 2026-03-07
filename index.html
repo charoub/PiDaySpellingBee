@@ -291,7 +291,7 @@
         "PILEA", "PILEAS", "PILEATE", "PILELESS", "PILE", "PILER", "PILERS", "PILES", "PILL", 
         "PILLAR", "PILLARLESS", "PILLARS", "PILLARET", "PILLARETS", "PILLER", "PILLERS", "PILLS", 
         "PIPISTRELLE", "PIPISTRELLES", "PIPIT", "PIPITS", "PIRATE", "PIRATES", "PISE", "PISES", 
-        "PISTE", "PISTES", "PITA", "PITAS", "PITLESS", "PITS", "PITTA", "PITTAS", "PITTER", 
+        "PISS", "PISTE", "PISTES", "PITA", "PITAS", "PITLESS", "PITS", "PITTA", "PITTAS", "PITTER", 
         "PITTERS", "RAPIER", "RAPIERS", "RESPITE", "RESPITES", "SALTPIETER", "SALTPIETERS", 
         "SALTPIETRE", "SALTPIETRES", "SEPIA", "SEPIAL", "SEPIAS", "SPIEL", "SPIELER", "SPIELERS", 
         "SPIELS", "SPIES", "SPILE", "SPILES", "SPILL", "SPILLER", "SPILLERS", "SPILLS", "SPILT", 
@@ -360,12 +360,13 @@
             foundWords.add(word);
             updateUI();
             
+            const ptsLabel = pts === 1 ? "point" : "points";
             if (isPangram) {
-                showMsg(`Pangram! +${pts}`);
+                showMsg(`Pangram! +${pts} ${ptsLabel}`);
             } else {
                 const messages = ["Good!", "Nice!", "Great!", "Awesome!", "Amazing!", "Splendid!"];
                 const msg = messages[Math.floor(Math.random() * messages.length)];
-                showMsg(`${msg} +${pts}`);
+                showMsg(`${msg} +${pts} ${ptsLabel}`);
             }
         } else {
             showMsg("Not in word list");
