@@ -285,16 +285,16 @@
     // Exhaustive Dictionary for {PI} + {L, A, S, T, E, R} (116 words)
     // Strictly verified: Only words containing the "PI" string together.
     const dictionary = [
-        "ASPIRATE", "ASPIRATES", "ASPIRER", "ASPIRERS", "ASPIRE", "ASPIRES", "EPILATE", "EPILATER", 
+        "ASPIRATE", "ASPIRATES", "ASPIRER", "ASPIRERS", "ASPIRE", "ASPIRES", "EPILATE", 
         "EPILATERS", "EPILATES", "EPISTLE", "EPISTLER", "EPISTLERS", "EPISTLES", "PIAL", "PIALS", 
         "PIAS", "PIASTER", "PIASTERS", "PIASTRE", "PIASTRES", "PIELESS", "PIER", "PIERS", "PIES", 
         "PIETA", "PIETAS", "PILAR", "PILARS", "PILASTER", "PILASTERS", "PILATE", "PILATES", 
         "PILEA", "PILEAS", "PILEATE", "PILELESS", "PILE", "PILER", "PILERS", "PILES", "PILL", 
         "PILLAR", "PILLARLESS", "PILLARS", "PILLARET", "PILLARETS", "PILLER", "PILLERS", "PILLS", 
-        "PIPISTRELLE", "PIPISTRELLES", "PIPIT", "PIPITS", "PIRATE", "PIRATES", "PISE", "PISES", 
+        "PIPISTRELLE", "PIPISTRELLES", "PIPIT", "PIPITS", "PIRATE", "PIRATES", "PISE", 
         "PISS", "PISSES", "PISTE", "PISTES", "PITA", "PITAS", "PITLESS", "PITS", "PITTA", "PITTAS", "PITTER", 
-        "PITTERS", "RAPIER", "RAPIERS", "RESPITE", "RESPITES", "SALTPIETER", "SALTPIETERS", 
-        "SALTPIETRE", "SALTPIETRES", "SEPIA", "SEPIAL", "SEPIAS", "SPIEL", "SPIELER", "SPIELERS", 
+        "PITTERS", "RAPIER", "RAPIERS", "RESPITE", "RESPITES", "SALTPIETRE", "SALTPIETRES", 
+ "SEPIA", "SEPIAL", "SEPIAS", "SPIEL", "SPIELER", "SPIELERS", 
         "SPIELS", "SPIES", "SPILE", "SPILES", "SPILL", "SPILLER", "SPILLERS", "SPILLS", "SPILT", 
         "SPIRAEA", "SPIRAEAS", "SPIRAL", "SPIRALLER", "SPIRALLERS", "SPIRALS", "SPIREA", "SPIREAS", 
         "SPIRE", "SPIRELESS", "SPIRES", "SPIRT", "SPIRTS", "SPIT", "SPITAL", "SPITALS", "SPITLESS", 
@@ -307,14 +307,14 @@
     
     const ranks = [
         { score: 0, name: "Novice" },
-        { score: 16, name: "Euclidean" },
-        { score: 40, name: "Pythagorean" },
-        { score: 65, name: "Cartesian" },
-        { score: 121, name: "Boolean" },
-        { score: 202, name: "Newtonian" },
-        { score: 324, name: "Gaussian" },
-        { score: 405, name: "Einsteinian" },
-        { score: 566, name: "Eulerian" }
+        { score: 15, name: "Euclidean" },
+        { score: 38, name: "Pythagorean" },
+        { score: 61, name: "Cartesian" },
+        { score: 114, name: "Boolean" },
+        { score: 190, name: "Newtonian" },
+        { score: 304, name: "Gaussian" },
+        { score: 381, name: "Einsteinian" },
+        { score: 533, name: "Eulerian" }
     ];
 
     function renderLetters() {
@@ -403,7 +403,7 @@
         ranks.forEach((r, i) => { if (score >= r.score) rankIdx = i; });
         
         let rankName = ranks[rankIdx].name;
-        if (score >= 809) rankName = "Queen Bee";
+        if (score >= 761) rankName = "Queen Bee";
         document.getElementById('rank').innerText = rankName;
 
         const dots = document.querySelectorAll('.progress-dot');
@@ -414,7 +414,7 @@
                 dot.style.backgroundColor = "#e0e0e0";
             }
         });
-        if (score >= 809) {
+        if (score >= 761) {
             document.querySelector('.progress-dot.square').style.backgroundColor = "var(--pi-gold)";
         }
     }
