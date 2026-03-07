@@ -345,10 +345,19 @@
         if (dictionary.includes(word)) {
             let pts = word.length === 4 ? 1 : word.length;
             const usedLetters = new Set(word.replace(/PI/g, 'P').split(''));
-            if (usedLetters.size >= 7) pts += 7; 
+            let isPangram = usedLetters.size >= 7;
+            if (isPangram) pts += 7; 
             score += pts;
             foundWords.add(word);
             updateUI();
+            
+            if (isPangram) {
+                showMsg(`Pangram! +${pts}`);
+            } else {
+                const messages = ["Good!", "Nice!", "Great!", "Awesome!", "Amazing!", "Splendid!"];
+                const msg = messages[Math.floor(Math.random() * messages.length)];
+                showMsg(`${msg} +${pts}`);
+            }
         } else {
             showMsg("Not in word list");
         }
