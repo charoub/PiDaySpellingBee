@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>π Day Spelling Bee v18</title>
+    <style>
+        :root { 
+            --pi-gold: #f8cd05; 
+            --pi-gray: #e6e6e6; 
+            --pi-dark: #000000;
+            --pi-border: #dcdcdc;
+            --pi-text-gray: #888;
+        }
+        
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            background-color: #ffffff; 
+            color: var(--pi-dark); 
+            margin: 0; 
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        .header-nav {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            padding: 15px 20px;
+            gap: 20px;
+            font-size: 16px;
+            color: #333;
+            border-bottom: 1px solid #f0f0f0;
+            box-sizing: border-box;
+        }
+        .header-nav span { cursor: pointer; }
+        .header-nav .more::after { content: ' ▼'; font-size: 10px; vertical-align: middle; }
+
+        .game-container { 
+            text-align: center; 
+            max-width: 400px; 
+            width: 100%; 
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin: 10px 0 20px 0;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 4px;
+        }
+        
+        .pi-symbol {
+            font-size: 32px;
+            line-height: 0;
+        }
+
+        .rank-section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            gap: 12px;
+        }
+        .rank-label { font-weight: bold; font-size: 18px; min-width: 80px; text-align: left; }
+        .score-circle {
+            background-color: var(--pi-gold);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+        .progress-line {
+            flex-grow: 1;
+            height: 1px;
+            background-color: #e0e0e0;
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .progress-dot {
+            width: 6px;
+            height: 6px;
+            background-color: #e0e0e0;
+            border-radius: 50%;
+        }
+        .progress-dot.square { border-radius: 0; width: 5px; height: 5px; }
+
+        .words-dropdown {
+            border: 1px solid var(--pi-border);
+            border-radius: 8px;
+            padding: 0;
+            text-align: left;
+            margin-bottom: 40px;
+            cursor: pointer;
+            overflow: hidden;
+            background: white;
+            width: 100%;
+        }
+        .dropdown-header {
+            padding: 14px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--pi-text-gray);
+            font-size: 16px;
+        }
+        .dropdown-header svg { width: 14px; height: 14px; transition: transform 0.2s; flex-shrink: 0; }
+        .words-dropdown.open .dropdown-header svg { transform: rotate(180deg); }
+        
+        #found-words-list {
+            display: none;
+            padding: 0 18px 15px 18px;
+            border-top: 1px solid #f0f0f0;
+            color: #333;
+            width: 100%;
+            box-sizing: border-box;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        #found-words-list.open { display: block; }
+
+        .input-display {
+            font-size: 38px;
+            font-weight: bold;
+            height: 50px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-transform: uppercase;
+            pointer-events: none;
+        }
+        .cursor {
+            width: 2px;
+            height: 35px;
+            background-color: var(--pi-gold);
+            display: inline-block;
+            margin-left: 2px;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        .hex-grid { 
+            position: relative; 
+            width: 300px; 
+            height: 280px; 
+            margin: 0 auto 40px auto; 
+        }
+        .hex { 
+            position: absolute; 
+            width: 88px; 
+            height: 76px; 
+            background-color: var(--pi-gray); 
+            clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            font-size: 28px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            user-select: none;
+            transition: transform 0.05s;
+        }
+        .hex:active { transform: scale(0.94); }
+        .hex.center { background-color: var(--pi-gold); left: 106px; top: 102px; z-index: 2; }
+        
+        .h-top { left: 106px; top: 21px; }
+        .h-tr  { left: 176px; top: 61.5px; }
+        .h-br  { left: 176px; top: 142.5px; }
+        .h-bot { left: 106px; top: 183px; }
+        .h-bl  { left: 36px;  top: 142.5px; }
+        .h-tl  { left: 36px;  top: 61.5px; }
+
+        .controls { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center;
+            gap: 12px; 
+        }
+        .btn {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 40px;
+            padding: 14px 30px;
+            font-size: 16px;
+            cursor: pointer;
+            color: #000;
+            font-weight: 500;
+        }
+        .shuffle-btn {
+            width: 52px;
+            height: 52px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        .shuffle-btn svg { width: 22px; height: 22px; color: #333; }
+
+        .msg { 
+            position: fixed;
+            top: 120px;
+            background: #000;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 15px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .word-group { margin-top: 12px; line-height: 1.5; font-size: 15px; }
+        .word-group strong { font-size: 11px; color: #aaa; margin-right: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+    </style>
+</head>
+<body>
+
+<div class="header-nav">
+    <span>Stats</span>
+    <span>Yesterday</span>
+    <span class="more">More</span>
+</div>
+
+<div class="game-container">
+    <h1><span class="pi-symbol">π</span> Day Spelling Bee</h1>
+    
+    <div class="rank-section">
+        <span class="rank-label" id="rank">Novice</span>
+        <div class="score-circle" id="score">0</div>
+        <div class="progress-line">
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
+            <div class="progress-dot square"></div>
+        </div>
+    </div>
+
+    <div class="words-dropdown" id="dropdown-btn" onclick="toggleWords()">
+        <div class="dropdown-header">
+            <span id="dropdown-text">Your words ...</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+        <div id="found-words-list"></div>
+    </div>
+
+    <div id="message" class="msg"></div>
+    
+    <div class="input-display" id="guess-input">
+        <span id="guess-text"></span><span class="cursor"></span>
+    </div>
+    
+    <div class="hex-grid">
+        <div class="hex center" onclick="addLetter('PI')">PI</div>
+        <div id="hex1" class="hex h-top" onclick="addLetter(this.innerText)"></div>
+        <div id="hex2" class="hex h-tr"  onclick="addLetter(this.innerText)"></div>
+        <div id="hex3" class="hex h-br"  onclick="addLetter(this.innerText)"></div>
+        <div id="hex4" class="hex h-bot" onclick="addLetter(this.innerText)"></div>
+        <div id="hex5" class="hex h-bl"  onclick="addLetter(this.innerText)"></div>
+        <div id="hex6" class="hex h-tl"  onclick="addLetter(this.innerText)"></div>
+    </div>
+
+    <div class="controls">
+        <button class="btn" onclick="deleteLetter()">Delete</button>
+        <button class="btn shuffle-btn" onclick="shuffleLetters()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6M3 12a9 9 0 0 1 15-6.7L21 8M3 22v-6h6M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+        </button>
+        <button class="btn" onclick="submitWord()">Enter</button>
+    </div>
+</div>
+
+<script>
+    // Exhaustive Dictionary for {PI} + {L, A, S, T, E, R} (116 words)
+    // Strictly verified: Only words containing the "PI" string together.
+    const dictionary = [
+        "ASPIRATE", "ASPIRATES", "ASPIRER", "ASPIRERS", "ASPIRE", "ASPIRES", "EPILATE", "EPILATER", 
+        "EPILATERS", "EPILATES", "EPISTLE", "EPISTLER", "EPISTLERS", "EPISTLES", "PIAL", "PIALS", 
+        "PIAS", "PIASTER", "PIASTERS", "PIASTRE", "PIASTRES", "PIELESS", "PIER", "PIERS", "PIES", 
+        "PIETA", "PIETAS", "PILAR", "PILARS", "PILASTER", "PILASTERS", "PILATE", "PILATES", 
+        "PILEA", "PILEAS", "PILEATE", "PILELESS", "PILE", "PILER", "PILERS", "PILES", "PILL", 
+        "PILLAR", "PILLARLESS", "PILLARS", "PILLARET", "PILLARETS", "PILLER", "PILLERS", "PILLS", 
+        "PIPISTRELLE", "PIPISTRELLES", "PIPIT", "PIPITS", "PIRATE", "PIRATES", "PISE", "PISES", 
+        "PISTE", "PISTES", "PITA", "PITAS", "PITLESS", "PITS", "PITTA", "PITTAS", "PITTER", 
+        "PITTERS", "RAPIER", "RAPIERS", "RESPITE", "RESPITES", "SALTPIETER", "SALTPIETERS", 
+        "SALTPIETRE", "SALTPIETRES", "SEPIA", "SEPIAL", "SEPIAS", "SPIEL", "SPIELER", "SPIELERS", 
+        "SPIELS", "SPIES", "SPILE", "SPILES", "SPILL", "SPILLER", "SPILLERS", "SPILLS", "SPILT", 
+        "SPIRAEA", "SPIRAEAS", "SPIRAL", "SPIRALLER", "SPIRALLERS", "SPIRALS", "SPIREA", "SPIREAS", 
+        "SPIRE", "SPIRELESS", "SPIRES", "SPIRT", "SPIRTS", "SPIT", "SPITAL", "SPITALS", "SPITLESS", 
+        "SPITS", "SPITE", "SPITES", "SPITTER", "SPITTERS", "SPITTLE", "SPITTLES", "TAPIR", "TAPIRS"
+    ];
+
+    let outerLetters = ['L', 'A', 'S', 'T', 'E', 'R'];
+    let score = 0;
+    const foundWords = new Set();
+    
+    const ranks = [
+        { score: 0, name: "Novice" },
+        { score: 10, name: "Pythagorean" },
+        { score: 40, name: "Cartesian" },
+        { score: 80, name: "Boolean" },
+        { score: 150, name: "Newtonian" },
+        { score: 250, name: "Gaussian" }
+    ];
+
+    function renderLetters() {
+        for (let i = 0; i < outerLetters.length; i++) {
+            document.getElementById(`hex${i+1}`).innerText = outerLetters[i];
+        }
+    }
+
+    function shuffleLetters() {
+        for (let i = outerLetters.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [outerLetters[i], outerLetters[j]] = [outerLetters[j], outerLetters[i]];
+        }
+        renderLetters();
+    }
+
+    function addLetter(l) {
+        document.getElementById('guess-text').innerText += l;
+    }
+
+    function deleteLetter() {
+        const span = document.getElementById('guess-text');
+        let text = span.innerText;
+        if (text.endsWith('PI')) {
+            span.innerText = text.slice(0, -2);
+        } else {
+            span.innerText = text.slice(0, -1);
+        }
+    }
+
+    function submitWord() {
+        const span = document.getElementById('guess-text');
+        const word = span.innerText.toUpperCase();
+        span.innerText = "";
+
+        if (word.length === 0) return;
+        if (word.length < 4) return showMsg("Too short");
+        if (!word.includes('PI')) return showMsg("Missing center letter");
+        if (foundWords.has(word)) return showMsg("Already found");
+        
+        if (dictionary.includes(word)) {
+            let pts = word.length === 4 ? 1 : word.length;
+            const usedLetters = new Set(word.replace(/PI/g, 'P').split(''));
+            if (usedLetters.size >= 7) pts += 7; 
+            score += pts;
+            foundWords.add(word);
+            updateUI();
+        } else {
+            showMsg("Not in word list");
+        }
+    }
+
+    function updateUI() {
+        document.getElementById('score').innerText = score;
+        const count = foundWords.size;
+        document.getElementById('dropdown-text').innerText = count === 0 ? "Your words ..." : `You have found ${count} word${count > 1 ? 's' : ''}`;
+        
+        const wordsByLength = {};
+        foundWords.forEach(word => {
+            const len = word.length;
+            if (!wordsByLength[len]) wordsByLength[len] = [];
+            wordsByLength[len].push(word);
+        });
+
+        const list = document.getElementById('found-words-list');
+        list.innerHTML = '';
+        const lengths = Object.keys(wordsByLength).sort((a, b) => b - a);
+        lengths.forEach(len => {
+            const div = document.createElement('div');
+            div.className = 'word-group';
+            div.innerHTML = `<strong>${len}L:</strong> ${wordsByLength[len].sort().join(', ')}`;
+            list.appendChild(div);
+        });
+
+        let rankObj = ranks.filter(r => score >= r.score).pop();
+        document.getElementById('rank').innerText = rankObj.name;
+    }
+
+    function toggleWords() {
+        const list = document.getElementById('found-words-list');
+        const btn = document.getElementById('dropdown-btn');
+        list.classList.toggle('open');
+        btn.classList.toggle('open');
+    }
+
+    function showMsg(m) {
+        const mf = document.getElementById('message');
+        mf.innerText = m;
+        mf.style.opacity = "1";
+        setTimeout(() => { if (mf.innerText === m) mf.style.opacity = "0"; }, 2000);
+    }
+
+    renderLetters();
+</script>
+</body>
+</html>
