@@ -244,6 +244,7 @@
             <div class="progress-dot"></div>
             <div class="progress-dot"></div>
             <div class="progress-dot"></div>
+            <div class="progress-dot"></div>
             <div class="progress-dot square"></div>
         </div>
     </div>
@@ -306,11 +307,14 @@
     
     const ranks = [
         { score: 0, name: "Novice" },
-        { score: 10, name: "Pythagorean" },
-        { score: 40, name: "Cartesian" },
-        { score: 80, name: "Boolean" },
-        { score: 150, name: "Newtonian" },
-        { score: 250, name: "Gaussian" }
+        { score: 17, name: "Euclidean" },
+        { score: 42, name: "Pythagorean" },
+        { score: 68, name: "Cartesian" },
+        { score: 128, name: "Boolean" },
+        { score: 214, name: "Newtonian" },
+        { score: 342, name: "Gaussian" },
+        { score: 428, name: "Einsteinian" },
+        { score: 599, name: "Eulerian" }
     ];
 
     function renderLetters() {
@@ -395,8 +399,24 @@
             list.appendChild(div);
         });
 
-        let rankObj = ranks.filter(r => score >= r.score).pop();
-        document.getElementById('rank').innerText = rankObj.name;
+        let rankIdx = 0;
+        ranks.forEach((r, i) => { if (score >= r.score) rankIdx = i; });
+        
+        let rankName = ranks[rankIdx].name;
+        if (score >= 856) rankName = "Queen Bee";
+        document.getElementById('rank').innerText = rankName;
+
+        const dots = document.querySelectorAll('.progress-dot');
+        dots.forEach((dot, i) => {
+            if (i <= rankIdx) {
+                dot.style.backgroundColor = "var(--pi-gold)";
+            } else {
+                dot.style.backgroundColor = "#e0e0e0";
+            }
+        });
+        if (score >= 856) {
+            document.querySelector('.progress-dot.square').style.backgroundColor = "var(--pi-gold)";
+        }
     }
 
     function toggleWords() {
