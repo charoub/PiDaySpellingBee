@@ -292,7 +292,7 @@
         "PILEA", "PILEAS", "PILEATE", "PILELESS", "PILE", "PILER", "PILERS", "PILES", "PILL", 
         "PILLAR", "PILLARLESS", "PILLARS", "PILLARET", "PILLARETS", "PILLER", "PILLERS", "PILLS", 
         "PIPISTRELLE", "PIPISTRELLES", "PIPIT", "PIPITS", "PIRATE", "PIRATES", "PISE", 
-        "PISS", "PISSES", "PISTE", "PISTES", "PITA", "PITAS", "PITLESS", "PITS", "PITTA", "PITTAS", "PITTER", 
+        "PISS", "PISSES", "PISSER", "PISSERS", "PISTE", "PISTES", "PITA", "PITAS", "PITLESS", "PITS", "PITTA", "PITTAS", "PITTER", 
         "PITTERS", "RAPIER", "RAPIERS", "RESPITE", "RESPITES", "SALTPIETRE", "SALTPIETRES", 
  "SEPIA", "SEPIAL", "SEPIAS", "SPIEL", "SPIELER", "SPIELERS", 
         "SPIELS", "SPIES", "SPILE", "SPILES", "SPILL", "SPILLER", "SPILLERS", "SPILLS", "SPILT", 
@@ -309,12 +309,12 @@
         { score: 0, name: "Novice" },
         { score: 15, name: "Euclidean" },
         { score: 38, name: "Pythagorean" },
-        { score: 61, name: "Cartesian" },
-        { score: 115, name: "Boolean" },
-        { score: 192, name: "Newtonian" },
-        { score: 307, name: "Gaussian" },
-        { score: 384, name: "Einsteinian" },
-        { score: 538, name: "Eulerian" }
+        { score: 62, name: "Cartesian" },
+        { score: 116, name: "Boolean" },
+        { score: 194, name: "Newtonian" },
+        { score: 310, name: "Gaussian" },
+        { score: 388, name: "Einsteinian" },
+        { score: 543, name: "Eulerian" }
     ];
 
     function renderLetters() {
@@ -403,7 +403,7 @@
         ranks.forEach((r, i) => { if (score >= r.score) rankIdx = i; });
         
         let rankName = ranks[rankIdx].name;
-        if (score >= 769) rankName = "Queen Bee";
+        if (score >= 777) rankName = "Queen Bee";
         document.getElementById('rank').innerText = rankName;
 
         const dots = document.querySelectorAll('.progress-dot');
@@ -414,7 +414,7 @@
                 dot.style.backgroundColor = "#e0e0e0";
             }
         });
-        if (score >= 769) {
+        if (score >= 777) {
             document.querySelector('.progress-dot.square').style.backgroundColor = "var(--pi-gold)";
         }
     }
