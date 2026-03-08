@@ -288,7 +288,7 @@
         "ASPIRATE", "ASPIRATES", "ASPIRER", "ASPIRERS", "ASPIRE", "ASPIRES", "EPILATE", 
         "EPILATERS", "EPILATES", "EPISTLE", "EPISTLER", "EPISTLERS", "EPISTLES", "PIAL", "PIALS", 
         "PIAS", "PIASTER", "PIASTERS", "PIASTRE", "PIASTRES", "PIELESS", "PIER", "PIERS", "PIES", 
-        "PIETA", "PIETAS", "PILAR", "PILARS", "PILASTER", "PILASTERS", "PILATE", "PILATES", 
+        "PIETA", "PIETAS", "PILAR", "PILARS", "PILASTER", "PILASTERS", "PILATES", 
         "PILEA", "PILEAS", "PILEATE", "PILELESS", "PILE", "PILER", "PILERS", "PILES", "PILL", 
         "PILLAR", "PILLARLESS", "PILLARS", "PILLARET", "PILLARETS", "PILLER", "PILLERS", "PILLS", 
         "PIPISTRELLE", "PIPISTRELLES", "PIPIT", "PIPITS", "PIRATE", "PIRATES", "PISE", 
@@ -309,12 +309,12 @@
         { score: 0, name: "Novice" },
         { score: 15, name: "Euclidean" },
         { score: 38, name: "Pythagorean" },
-        { score: 62, name: "Cartesian" },
-        { score: 116, name: "Boolean" },
-        { score: 194, name: "Newtonian" },
-        { score: 310, name: "Gaussian" },
-        { score: 388, name: "Einsteinian" },
-        { score: 543, name: "Eulerian" }
+        { score: 61, name: "Cartesian" },
+        { score: 115, name: "Boolean" },
+        { score: 192, name: "Newtonian" },
+        { score: 308, name: "Gaussian" },
+        { score: 385, name: "Einsteinian" },
+        { score: 539, name: "Eulerian" }
     ];
 
     function renderLetters() {
@@ -403,7 +403,7 @@
         ranks.forEach((r, i) => { if (score >= r.score) rankIdx = i; });
         
         let rankName = ranks[rankIdx].name;
-        if (score >= 777) rankName = "Queen Bee";
+        if (score >= 771) rankName = "Queen Bee";
         document.getElementById('rank').innerText = rankName;
 
         const dots = document.querySelectorAll('.progress-dot');
@@ -414,7 +414,7 @@
                 dot.style.backgroundColor = "#e0e0e0";
             }
         });
-        if (score >= 777) {
+        if (score >= 771) {
             document.querySelector('.progress-dot.square').style.backgroundColor = "var(--pi-gold)";
         }
     }
